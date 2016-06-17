@@ -1,26 +1,76 @@
 apply plugin: 'com.android.application'
 
+//定义打包时间函数
+def packageTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
+
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
 
+    signingConfigs {
+        debug {
+
+        }
+        release {
+            //storeFile file("../yourapp.keystore")
+            //storePassword "your password"
+            //keyAlias "your alias"
+            //keyPassword "your password"
+
+            //setting your signing.properties
+            //first, add signing.properties to ./app/
+            //second, add property STORE_FILE, STORE_PASSWORD, KEY_ALIAS, KEY_PASSWORD
+        }
+    }
     defaultConfig {
         applicationId "ott.hope.com.appcodearchitecture"
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        // dex突破65535的限制
+        multiDexEnabled true
     }
     buildTypes {
         release {
             minifyEnabled false
+            zipAlignEnabled true
+            //移除无用的资源文件
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:multidex:1.0.0'
+    //View注解   代码地址-----> https://github.com/JakeWharton/butterknife
+    compile 'com.jakewharton:butterknife:8.1.0'
+    //图片加载  代码地址-----> https://github.com/facebook/fresco
+    compile 'com.facebook.fresco:fresco:0.11.0'
+    //API网络请求注解库    代码地址-----> https://github.com/square/retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    //网络请求库 代码地址-----> https://github.com/square/okhttp
+    compile 'com.squareup.okhttp3:okhttp:3.3.1'
+    //消息通知数据更新（类似Broadcast）  代码地址-----> https://github.com/greenrobot/EventBus
+    compile 'org.greenrobot:eventbus:3.0.0'
+    //解析JSON数据  代码地址-----> https://code.google.com/p/google-gson/
+    compile 'com.google.code.gson:gson:2.7'
+    //弹出提示信息    代码地址-----> https://github.com/johnkil/Android-AppMsg
+    compile 'com.github.johnkil.android-appmsg:appmsg:1.2.0'
+
+    compile 'com.squareup.retrofit2:retrofit:2.0.1'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.1'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.1'
+    compile 'com.facebook.stetho:stetho-okhttp3:1.3.1'
+    compile 'io.reactivex:rxjava:1.0.+'
+    compile 'io.reactivex:rxandroid:1.0.1'
+
 }
